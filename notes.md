@@ -13,9 +13,6 @@ configure networking
 Data centre == VPC
 VPC means an isolated space where we can create project resources and control them
 
-
-
-
 terraform-aws-instance
     variables
     locals

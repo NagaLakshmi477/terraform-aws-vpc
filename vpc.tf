@@ -151,6 +151,9 @@ resource "aws_route" "database" {
   nat_gateway_id = aws_nat_gateway.main.id
   
 }
+# gateway_id → Internet Gateway (IGW) → Direct internet access (used in public subnets).
+
+# nat_gateway_id → NAT Gateway (NGW) → Outbound-only internet access for private subnets (traffic flows: Private Subnet → NAT Gateway → Internet Gateway → Internet).
 
 
 resource "aws_route_table_association" "public" {
