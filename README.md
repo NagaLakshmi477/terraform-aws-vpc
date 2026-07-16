@@ -60,6 +60,7 @@ VPC ----> vpc only ---> roboshop --> CIDR = 10.0.0.0/16 ---> create vpc
 now need to attach IGW
 internet gateway ---> roboshop --> Attach to VPC --> create
 now we will create subnets
+
 subnets ---> create subnet ---> name ---> roboshop-public-1a ---> subenet cidr block 
 =10.0.1.0/24 ---> create
 subnets ---> create subnet ---> name ---> roboshop-public-1b ---> subenet cidr block 
@@ -110,14 +111,6 @@ attach database 1a and database 1b
 
 
 -----------------------------------------------------------------------
-ROBOSHOP:
-============
-# frontend
-80 ----> http ---> public
-443 ----> https --->public sercure
-22 ----> ssh ----> login for admins
-
-* before creating instances we need SG
 
 
 # if we want install any packages or doing anything from private
@@ -145,9 +138,10 @@ ingress           egress
 here ec2 will request NAT gate.it will take traffic.
 NAT means it is a service in AWS. It contain Elastic Ip
 
-ec2 public instances on restart then the pubic Ip are changed. But are using rs3 based on the IP's --> It is not work if we restart--->it will change in the backend
-NAT gateaway is also background server is in EC2 --->
-so while creating the NAT gateway we need to give elastic IP ---> to get static IP
+- ec2 public instances on restart then the pubic Ip are changed. 
+- But are using r53 based on the IP's --> It is not work if we restart--->it will change in the backend
+- NAT gateaway is also background server is in EC2 --->
+- so while creating the NAT gateway we need to give elastic IP ---> to get static IP
 we can request to ISP(internet provier services) to provide static Ip.
 They will provide and they will charge. IPv4 ---> here if server restared then the ip is not changed
 
@@ -164,7 +158,8 @@ NAT gateway doesn't require IGW but if NAT gateway wants to go out it needs go f
 internet<-----IGW <------tarffic <------NAT gate <-------- EC2
 ingress                                                   egress
 
-NAT gateaway enables oubound traffic for the instances in private subnets
+NAT gateaway enables outbound traffic for the instances in private subnets
+It will only work for outgoing trffic not incoming
 ==================
 
 # peering
@@ -181,6 +176,7 @@ default two vpc's by can't connect. If we want we can enable VPC peering.
 my account same region
 my account diffrent region
 
+two Vpc's cannot connect by default if we want we need to enable peering
 diff account diff region
 diff account same region
 
@@ -228,7 +224,7 @@ routes
 subnets and route table associations
 peering
 
-
+now comment the peering for 
 Trobuleshooting: (routes.io)
 =====================
 let consider we are not creating peering

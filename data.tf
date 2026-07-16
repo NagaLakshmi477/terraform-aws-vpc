@@ -1,17 +1,21 @@
-data "aws_availability_zones" "available"{
+data "aws_availability_zones" "available" {
     state = "available"
+  
 }
 
 
 output "az_info" {
-  value = data.aws_availability_zones.available
+  value = data.aws_availability_zones.available.names
 }
 
+# from user side we need to take using outputs file
 
 
-data "aws_vpc" "default"{
+data "aws_vpc" "default" {
   default = true
 }
+
+
 
 data "aws_route_table" "main" {
   vpc_id = data.aws_vpc.default.id
@@ -19,5 +23,4 @@ data "aws_route_table" "main" {
     name = "association.main"
     values = ["true"]
   }
-  
 }
