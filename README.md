@@ -36,61 +36,117 @@ output "name" {
     module.roboshop.instance_id  # you will get instance id as a output
 }
 
-VPC:
+# VPC Notes
 
-entrance --->village ----> streets ---> Roads
-IGW ---->    VPC -------> Subnets ----> Routes
+## Basic Understanding
 
-SYS1 ---> SYS2 --->(small connection) CONNECT means networking . He for multiple system connections we use IGW
+entrance ---> village ----> streets ---> roads  
+IGW ----> VPC -------> subnets ----> routes  
 
-Example:
-pincode ---500032
-VPC ---> CIDR
-subents -----> streets
+SYS1 ---> SYS2 ---> (small connection)  
+CONNECT means networking.  
+For multiple system connections we use IGW.
 
-32 bits = 4 * 8
-why we are creatin 2 availablity zones:
-beacuse of disater recovery
-1 region altest have 2 availablity zones
+---
 
-manual VPC creation :
-=======================
+## Example
 
-VPC ----> vpc only ---> roboshop --> CIDR = 10.0.0.0/16 ---> create vpc
-now need to attach IGW
-internet gateway ---> roboshop --> Attach to VPC --> create
-now we will create subnets
+pincode ---> 500032  
+VPC ---> CIDR  
+subnets -----> streets  
 
-subnets ---> create subnet ---> name ---> roboshop-public-1a ---> subenet cidr block 
-=10.0.1.0/24 ---> create
-subnets ---> create subnet ---> name ---> roboshop-public-1b ---> subenet cidr block 
-=10.0.2.0/24 ---> create
+32 bits = 4 * 8  
 
-subnets ---> create subnet ---> name ---> roboshop-private-1a ---> subenet cidr block 
-= 10.0.11.0/24 ---> create
-subnets ---> create subnet ---> name ---> roboshop-private-1b ---> subenet cidr block 
-= 10.0.12.0/24 ---> create
+---
 
-subnets ---> create subnet ---> name ---> roboshop-database-1a ---> subenet cidr block 
-= 10.0.21.0/24 ---> create
-subnets ---> create subnet ---> name ---> roboshop-database-1b ---> subenet cidr block 
-= 10.0.22.0/24 ---> create
+## Availability Zones
 
-Now we will create route tables for each
+Why we are creating 2 availability zones:  
+Because of disaster recovery  
 
-route table ---> create route table ---> roboshop public ---> vpc ---> create
-vpc ---> route table ---> edit ---->
-public means ----> 0.0.0.0/0 ---> internet notation----> Internet gateway
-subnet assications ---> edit ---> and public ---> save
-attach route to public----> vpc ---> route tables ---> edit and attach
+1 region at least has 2 availability zones  
 
-Here the request will come from local and internet gateway/ it will conatin routeto the internet
+---
 
-route table ---> create route table ---> roboshop private ---> vpc ---> create
-subnet assiocation ---> add private ---dsave
-route table ---> create route table ---> roboshop-database ---> vpc ---> create
-subnet assiocation ---> add database ---dsave
+# Manual VPC Creation
 
+## Step 1: Create VPC
+
+VPC ----> VPC only ---> roboshop  
+CIDR = 10.0.0.0/16 ---> create VPC  
+
+---
+
+## Step 2: Attach Internet Gateway
+
+Internet Gateway ---> roboshop ---> attach to VPC ---> create  
+
+---
+
+## Step 3: Create Subnets
+
+### Public Subnets
+
+subnets ---> create subnet ---> name ---> roboshop-public-1a  
+subnet CIDR block = 10.0.1.0/24 ---> create  
+
+subnets ---> create subnet ---> name ---> roboshop-public-1b  
+subnet CIDR block = 10.0.2.0/24 ---> create  
+
+---
+
+### Private Subnets
+
+subnets ---> create subnet ---> name ---> roboshop-private-1a  
+subnet CIDR block = 10.0.11.0/24 ---> create  
+
+subnets ---> create subnet ---> name ---> roboshop-private-1b  
+subnet CIDR block = 10.0.12.0/24 ---> create  
+
+---
+
+### Database Subnets
+
+subnets ---> create subnet ---> name ---> roboshop-database-1a  
+subnet CIDR block = 10.0.21.0/24 ---> create  
+
+subnets ---> create subnet ---> name ---> roboshop-database-1b  
+subnet CIDR block = 10.0.22.0/24 ---> create  
+
+---
+
+## Step 4: Create Route Tables
+
+### Public Route Table
+
+route table ---> create route table ---> roboshop-public ---> VPC ---> create  
+
+VPC ---> route table ---> edit  
+
+public means ---> 0.0.0.0/0 ---> internet notation ---> Internet Gateway  
+
+subnet associations ---> edit ---> add public ---> save  
+
+attach route to public ---> VPC ---> route tables ---> edit and attach  
+
+Here the request will come from local and Internet Gateway.  
+It will contain route to the internet.  
+
+---
+
+### Private Route Table
+
+route table ---> create route table ---> roboshop-private ---> VPC ---> create  
+
+subnet association ---> add private ---> save  
+
+---
+
+### Database Route Table
+
+route table ---> create route table ---> roboshop-database ---> VPC ---> create  
+
+subnet association ---> add database ---> save  
 
 
 ---------------------
@@ -107,10 +163,6 @@ create private route
 attach private 1a and private 1b
 create database route
 attach database 1a and database 1b
-
-
-
------------------------------------------------------------------------
 
 
 # if we want install any packages or doing anything from private
